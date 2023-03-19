@@ -25,6 +25,7 @@ $play = '';
 $computerWins = 0;
 $playerWins = 0;
 $round = 1;
+
 function play():string{
     global $play;
     $value = strtolower(readline("Start a new game? (yes/no) ". PHP_EOL));
@@ -32,8 +33,15 @@ function play():string{
     if($value === "no" || $value === "yes"){
         return $play = $value;
     }
-    echo "Invalid selection".PHP_EOL;
+    echo "--Invalid selection".PHP_EOL;
     return play();
+};
+
+function restart(){
+    global $computerWins, $playerWins, $round;
+    $computerWins = 0;
+    $playerWins = 0;
+    $round = 1;
 };
 
 echo "******************************************" . PHP_EOL;
@@ -77,16 +85,19 @@ while($play === "yes" && $computerWins != 3 && $playerWins != 3) {
     echo "--Player: $playerWins\n--Computer: $computerWins".PHP_EOL;
     echo "__________________________________________". PHP_EOL;
 
+    $round++;
+
     if ($playerWins === 3){
         echo "*** Player has won the game! ***".PHP_EOL;
         echo "__________________________________________". PHP_EOL;
+        restart();
         play();
     }elseif($computerWins === 3){
         echo "*** Computer has won the game! ***".PHP_EOL;
         echo "__________________________________________". PHP_EOL;
+        restart();
         play();
     }
-    $round++;
 }
 
 
