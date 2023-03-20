@@ -41,11 +41,8 @@ function play(): bool{
     return play();
 }
 
-function restart(){
-    global $round, $playerWins, $computerWins;
-    $computerWins = 0;
-    $playerWins = 0;
-    $round = 1;
+function hasWinner(int $someonesWins, int $wins = 3): bool{
+    return $someonesWins === $wins;
 }
 
 echo "******************************************" . PHP_EOL;
@@ -54,7 +51,6 @@ echo "-------------First to 3 wins!-------------" .PHP_EOL;
 echo "******************************************" . PHP_EOL;
 
 $isPlaying = play();
-
 
 while($isPlaying) {
 
@@ -93,16 +89,22 @@ while($isPlaying) {
 
     $round++;
 
-    if ($playerWins === 3){
-        echo "*** Player has won the game! ***".PHP_EOL;
-        echo "__________________________________________". PHP_EOL;
-        restart();
+    if (hasWinner($playerWins)) {
+        echo "*** Player has won the game! ***" . PHP_EOL;
+        echo "__________________________________________" . PHP_EOL;
         $isPlaying = play();
+        $computerWins = 0;
+        $playerWins = 0;
+        $round = 1;
+    }
 
-    }elseif($computerWins === 3){
+    if(hasWinner($computerWins)){
         echo "*** Computer has won the game! ***".PHP_EOL;
         echo "__________________________________________". PHP_EOL;
-        restart();
         $isPlaying = play();
+        $computerWins = 0;
+        $playerWins = 0;
+        $round = 1;
     }
+
 }
