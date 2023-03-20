@@ -49,34 +49,56 @@ foreach ($weapons as $key=>$weapon){
 }
 echo "-----------------------------------------------".PHP_EOL;
 
+function buy(){
+    $answer = strtolower(readline("Would you like to buy something? "));
 
-$weaponChoice = strtolower(readline("Which weapon would you like to purchase? "));
+    if($answer === "yes"){
+        return true;
+    }
+
+    if($answer === "no"){
+        exit;
+    }
+
+    echo "Invalid choice".PHP_EOL;
+    return buy();
+}
+
+$buy = buy();
+
+while($buy) {
+    $weaponChoice = strtolower(readline("Make your choice:  ".PHP_EOL));
 
     if (!array_key_exists($weaponChoice, $weapons)) {
-        echo "Invalid weapon!";
-        exit;
+        echo "Invalid weapon!".PHP_EOL;
+        buy();
+        continue;
     }
 
     $weaponChoice = $weapons[$weaponChoice];
 
     if (!in_array($weaponChoice->licence, $person->licence)) {
-        echo "Sorry, you don't have the correct licence";
-        exit;
+        echo "Sorry, you don't have the correct licence". PHP_EOL;
+        buy();
+        continue;
     }
 
     if ($weaponChoice->price > $person->cash) {
-        echo "Sorry, you don't have enough money";
-        exit;
+        echo "Sorry, you don't have enough money". PHP_EOL;
+        buy();
+        continue;
     }
     echo "-----------------------------------------------" . PHP_EOL;
-    echo "You bought a $weaponChoice->name, it has been added to your inventory".PHP_EOL;
+    echo "You bought a $weaponChoice->name!" . PHP_EOL;
 
     $person->inventory[] = $weaponChoice;
-    $cash = ($person->cash -= $weaponChoice->price)/100;
-
-    echo "You have $cash$ left over";
-
-
+    $cash = ($person->cash -= $weaponChoice->price) / 100;
+    echo "You have $cash$ left over and these weapons in your inventory:".PHP_EOL;
+    foreach($person->inventory as $weapon){
+        echo "--- $weapon->name".PHP_EOL;
+    }
+    buy();
+}
 
 
 

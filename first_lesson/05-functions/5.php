@@ -8,29 +8,29 @@
 
 $fruits = [
     [
-        "name" => "bananas",
+        "name" => "Bananas",
         "weight" => 2,
     ],
     [
-        "name" => "apples",
+        "name" => "Apples",
         "weight" => 12,
     ],
     [
-        "name" => "oranges",
+        "name" => "Oranges",
         "weight" => 23,
     ]
 ];
-
-function weightOver10 (int $weight): bool{
-    return $weight > 10;
-}
 
 $shippingCosts = [
     "under10" => 1,
     "over10" => 2
 ];
 
+function weightOver10 (int $weight): bool{
+    return $weight > 10;
+}
+
 foreach ($fruits as $fruit){
-    echo "{$fruit["name"]} weight: {$fruit["weight"]}kgs, shipping cost: ";
+    echo "{$fruit["name"]} weight: {$fruit["weight"]} kg, shipping cost: ";
     echo weightOver10($fruit["weight"])? "{$shippingCosts["over10"]}$\n" : "{$shippingCosts["under10"]}$\n";
 }
