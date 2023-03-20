@@ -21,37 +21,43 @@ $elements = [
     "spock"=>$spock,
     "lizard"=>$lizard
 ];
-$play = '';
+
 $computerWins = 0;
 $playerWins = 0;
 $round = 1;
 
-function play():string{
-    global $play;
+function play(): bool{
     $value = strtolower(readline("Start a new game? (yes/no) ". PHP_EOL));
 
-    if($value === "no" || $value === "yes"){
-        return $play = $value;
+    if($value === "no"){
+        exit;
     }
+
+    if($value === "yes"){
+        return true;
+    }
+
     echo "--Invalid selection".PHP_EOL;
     return play();
-};
+}
 
 function restart(){
-    global $computerWins, $playerWins, $round;
+    global $round, $playerWins, $computerWins;
     $computerWins = 0;
     $playerWins = 0;
     $round = 1;
-};
+}
 
 echo "******************************************" . PHP_EOL;
 echo "---Rock, paper, scissors, lizard, spock---" . PHP_EOL;
 echo "-------------First to 3 wins!-------------" .PHP_EOL;
 echo "******************************************" . PHP_EOL;
 
-play();
+$isPlaying = play();
 
-while($play === "yes" && $computerWins != 3 && $playerWins != 3) {
+
+while($isPlaying) {
+
     echo "              ***ROUND $round***". PHP_EOL;
     $playersChoice = strtolower(readline("Choose your element: "));
     $computersChoice = $elements[array_rand($elements)];
@@ -91,13 +97,12 @@ while($play === "yes" && $computerWins != 3 && $playerWins != 3) {
         echo "*** Player has won the game! ***".PHP_EOL;
         echo "__________________________________________". PHP_EOL;
         restart();
-        play();
+        $isPlaying = play();
+
     }elseif($computerWins === 3){
         echo "*** Computer has won the game! ***".PHP_EOL;
         echo "__________________________________________". PHP_EOL;
         restart();
-        play();
+        $isPlaying = play();
     }
 }
-
-
