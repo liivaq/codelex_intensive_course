@@ -3,7 +3,7 @@
 // Game of Hangman - guess a random word, you lose after 3 wrong guesses;
 
 $wrong1 = "     +-------+\n             |\n             |\n             |\n             |\n             |\n";
-$wrong2 = "     +-------+\n     |       |\n     0       |\n             |\n             |\n             |\n";
+$wrong2 = "     +-------+\n     |       |\n     0       |\n    /|       |\n             |\n             |\n";
 $wrong3 = "     +-------+\n     |       |\n     0       |\n    /|\      |\n    / \      |\n             |\n";
 
 $words = ["falafel", "hiking", "pistachio", "programming", "lullaby"];
@@ -14,6 +14,7 @@ echo"Welcome to Hangman! Can you guess the word?".PHP_EOL;
 echo implode(" ", $hiddenWord).PHP_EOL;
 
 $wrongGuesses = 0;
+
 while($wrongGuesses < 3){
     $guess = trim(strtolower(readline("Guess a letter: ")));
 
@@ -43,13 +44,13 @@ while($wrongGuesses < 3){
 
     switch ($wrongGuesses){
         case 1:
-            echo "--Be careful, you're close to the gallows\n$wrong1";
+            echo $wrong1;
             break;
         case 2:
-            echo "--Only one wrong guess allowed now...\n$wrong2";
+            echo $wrong2;
             break;
         case 3:
-            echo "--You LOSE!\n$wrong3";
+            echo "YOU LOSE! The word to guess was: ". implode('', $wordToGuess)."\n$wrong3";
     }
 
     if($result === implode(' ', $wordToGuess)){
