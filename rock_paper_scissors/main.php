@@ -8,41 +8,37 @@ function makeElement(string $name, array $beats): stdClass{
     $element->beats = $beats;
     return $element;
 }
-$rock = makeElement("rock", ["scissors", "lizard"]);
-$scissors = makeElement("scissors", ["paper", "lizard"]);
-$paper = makeElement("paper", ["rock", "spock"]);
-$spock = makeElement("spock", ["scissors", "rock"]);
-$lizard = makeElement("lizard", ["paper", "spock"]);
 
 $elements = [
-    "rock"=>$rock,
-    "scissors"=>$scissors,
-    "paper"=>$paper,
-    "spock"=>$spock,
-    "lizard"=>$lizard
+    "rock"=>makeElement("rock", ["scissors", "lizard"]),
+    "scissors"=>makeElement("scissors", ["paper", "lizard"]),
+    "paper"=>makeElement("paper", ["rock", "spock"]),
+    "spock"=>makeElement("spock", ["scissors", "rock"]),
+    "lizard"=>makeElement("lizard", ["paper", "spock"])
 ];
 
 $computerWins = 0;
 $playerWins = 0;
 $round = 1;
 
-function play(): bool{
-    $value = strtolower(readline("Start a new game? (yes/no) ". PHP_EOL));
+function play(): bool {
+    while (true) {
+        $value = strtolower(readline("Start a new game? (yes/no) ". PHP_EOL));
 
-    if($value === "no"){
-        exit;
+        if($value === "no"){
+            exit;
+        }
+
+        if($value === "yes"){
+            return true;
+        }
+
+        echo "--Invalid selection".PHP_EOL;
     }
-
-    if($value === "yes"){
-        return true;
-    }
-
-    echo "--Invalid selection".PHP_EOL;
-    return play();
 }
 
-function hasWinner(int $someonesWins, int $wins = 3): bool{
-    return $someonesWins === $wins;
+function hasWinner(int $someonesWins, int $necessaryWins = 3): bool{
+    return $someonesWins === $necessaryWins;
 }
 
 echo "******************************************" . PHP_EOL;
@@ -90,21 +86,17 @@ while($isPlaying) {
     $round++;
 
     if (hasWinner($playerWins)) {
-        echo "*** Player has won the game! ***" . PHP_EOL;
+        $winner = "Player";
+    }
+    if (hasWinner($computerWins)) {
+        $winner = "Computer";
+    }
+
+    if (isset($winner)) {
+        echo "*** $winner has won the game! ***" . PHP_EOL;
         echo "__________________________________________" . PHP_EOL;
         $isPlaying = play();
-        $computerWins = 0;
-        $playerWins = 0;
+        $computerWins = $playerWins = 0;
         $round = 1;
     }
-
-    if(hasWinner($computerWins)){
-        echo "*** Computer has won the game! ***".PHP_EOL;
-        echo "__________________________________________". PHP_EOL;
-        $isPlaying = play();
-        $computerWins = 0;
-        $playerWins = 0;
-        $round = 1;
-    }
-
 }
