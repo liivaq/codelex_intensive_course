@@ -10,7 +10,7 @@ $words = ["falafel", "hiking", "pistachio", "programming", "lullaby"];
 $wordToGuess = str_split($words[array_rand($words)]);
 $hiddenWord = str_split(str_repeat("_", count($wordToGuess)));
 
-echo"Welcome to Hangman! Can you guess the word?".PHP_EOL;
+echo"*** Welcome to Hangman! Can you guess the word? ***".PHP_EOL;
 echo implode(" ", $hiddenWord).PHP_EOL;
 
 $wrongGuesses = 0;
