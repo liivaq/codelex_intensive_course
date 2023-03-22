@@ -1,7 +1,10 @@
 <?php
 //Tic-tac-toe game
+$playerOne = ' X ';
+$playerTwo = ' O ';
+$turn = $playerOne;
 
-function makeCell ($x, $y, $symbol = "-"): stdClass{
+function makeCell ($x, $y, $symbol = " - "): stdClass{
     $cell = new stdClass();
     $cell->x = $x;
     $cell->y = $y;
@@ -9,83 +12,79 @@ function makeCell ($x, $y, $symbol = "-"): stdClass{
     return $cell;
 }
 
-function findLine(array $winningLine): bool{
-    foreach ($winningLine as $line) {
+function findWinningLine(array $gameBoard): bool{
+    foreach ($gameBoard as $line) {
+        $firstCell = $line[0];
+        $winningLine = true;
         foreach ($line as $cell) {
-            if ($cell->symbol === "-" || $cell->symbol != $line[0]->symbol) {
-                return false;
+            if ($cell->symbol === " - " || $cell->symbol != $firstCell->symbol) {
+                $winningLine = false;
+                break;
             }
         }
-        echo "The winner is: {$winningLine[0][0]->symbol}".PHP_EOL;
-        return true;
+        if ($winningLine) {
+            echo "The winner is: {$firstCell->symbol}".PHP_EOL;
+            return true;
+        }
     }
-    return true;
+    return false;
 }
 
-$rows = [
+$gameBoard = [
     [makeCell(0,0), makeCell(1, 0), makeCell(2,0)],
     [makeCell(0,1), makeCell(1, 1), makeCell(2,1)],
     [makeCell(0,2), makeCell(1, 2), makeCell(2,2)],
  ];
 
-$columns = [
-    [$rows[0][0], $rows[1][0], $rows[2][0]],
-    [$rows[0][1], $rows[1][1], $rows[2][1]],
-    [$rows[0][2], $rows[1][2], $rows[2][2]]
-];
-$diagonals = [
-    [$rows[0][0], $rows[1][1], $rows[2][2]],
-    [$rows[2][0], $rows[1][1], $rows[0][2]],
+$winningLines= [
+    //rows
+    [$gameBoard[0][0], $gameBoard[1][0], $gameBoard[2][0]],
+    [$gameBoard[0][1], $gameBoard[1][1], $gameBoard[2][1]],
+    [$gameBoard[0][2], $gameBoard[1][2], $gameBoard[2][2]],
+    //columns
+    [$gameBoard[0][0], $gameBoard[0][1], $gameBoard[0][2]],
+    [$gameBoard[1][0], $gameBoard[1][1], $gameBoard[1][2]],
+    [$gameBoard[2][0], $gameBoard[2][1], $gameBoard[2][2]],
+    //diagonals
+    [$gameBoard[0][0], $gameBoard[1][1], $gameBoard[2][2]],
+    [$gameBoard[0][2], $gameBoard[1][1], $gameBoard[2][0]],
 ];
 
-$winner = false;
-while(!$winner) {
-    foreach ($rows as $row) {
+echo "***Tic-tac-toe!***\n***Place your symbol by choosing coordinates on the board (example: 01)".PHP_EOL;
+$counter = 0;
+while($counter<10) {
+    foreach ($gameBoard as $row) {
         foreach ($row as $cell) {
             echo $cell->symbol;
         }
         echo PHP_EOL;
     }
+    if($counter === 9 && !findWinningLine($winningLines)){
+        echo "It's a tie!".PHP_EOL;
+        exit;
+    }
 
-    $playersChoice = str_split(readline("Player one, place your symbol: "));
-    if($rows[$playersChoice[1]][$playersChoice[0]]->symbol != "-"){
-        echo "This cell is already taken!".PHP_EOL;
+    if(findWinningLine($winningLines)){
+        exit;
+    }
+
+    $playersChoice = str_split(readline("Player $turn, place your symbol: "));
+
+    if(count($playersChoice) != 2
+        || !is_numeric(implode($playersChoice))
+        ||$playersChoice[0]>(count($gameBoard[0])-1)
+        ||$playersChoice[1]>(count($gameBoard[0])-1)) {
+        echo"Invalid input!".PHP_EOL;
         continue;
     }
 
-    $rows[$playersChoice[1]][$playersChoice[0]]->symbol = "X";
-
-    if(findLine($rows) || findLine($columns) || findLine($diagonals)){
-        $winner = true;
-    }
-
-    foreach ($rows as $row) {
-        foreach ($row as $cell) {
-            echo $cell->symbol;
-        }
-        echo PHP_EOL;
-    }
-
-    $playersChoice2 = str_split(readline("Player two, place your symbol: "));
-    if($rows[$playersChoice2[1]][$playersChoice2[0]]->symbol != "-"){
+    if($gameBoard[$playersChoice[1]][$playersChoice[0]]->symbol != ' - '){
         echo "This cell is already taken!".PHP_EOL;
         continue;
     }
+    $gameBoard[$playersChoice[1]][$playersChoice[0]]->symbol = $turn;
 
-    $rows[$playersChoice2[1]][$playersChoice2[0]]->symbol = "O";
+    $turn = $turn === $playerOne? $playerTwo : $playerOne;
+    $counter++;
 
-    if(findLine($rows) || findLine($columns) || findLine($diagonals)){
-        $winner = true;
-    }
-
-    foreach ($rows as $row) {
-        foreach ($row as $cell) {
-            echo $cell->symbol;
-        }
-        echo PHP_EOL;
-    }
-
-    if(findLine($rows) || findLine($columns) || findLine($diagonals)){
-        $winner = true;
-    }
 }
