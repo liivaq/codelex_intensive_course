@@ -18,8 +18,8 @@ $wrongGuesses = 0;
 while($wrongGuesses < 3){
     $guess = trim(strtolower(readline("Guess a letter: ")));
 
-    if (strlen($guess) != 1){
-        echo "Enter one letter!".PHP_EOL;
+    if (strlen($guess) != 1 ||preg_match("/[^a-z]+/", $guess)){
+        echo "Invalid guess! Enter one letter.".PHP_EOL;
         continue;
     }
 
