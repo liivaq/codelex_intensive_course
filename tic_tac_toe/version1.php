@@ -30,7 +30,7 @@ function findWinningLine(array $gameBoard): bool{
     return false;
 }
 
-$gameBoard = [
+$rows = [
     [makeCell(0,0), makeCell(1, 0), makeCell(2,0)],
     [makeCell(0,1), makeCell(1, 1), makeCell(2,1)],
     [makeCell(0,2), makeCell(1, 2), makeCell(2,2)],
@@ -38,22 +38,22 @@ $gameBoard = [
 
 $winningLines= [
     //rows
-    [$gameBoard[0][0], $gameBoard[1][0], $gameBoard[2][0]],
-    [$gameBoard[0][1], $gameBoard[1][1], $gameBoard[2][1]],
-    [$gameBoard[0][2], $gameBoard[1][2], $gameBoard[2][2]],
+    [$rows[0][0], $rows[1][0], $rows[2][0]],
+    [$rows[0][1], $rows[1][1], $rows[2][1]],
+    [$rows[0][2], $rows[1][2], $rows[2][2]],
     //columns
-    [$gameBoard[0][0], $gameBoard[0][1], $gameBoard[0][2]],
-    [$gameBoard[1][0], $gameBoard[1][1], $gameBoard[1][2]],
-    [$gameBoard[2][0], $gameBoard[2][1], $gameBoard[2][2]],
+    [$rows[0][0], $rows[0][1], $rows[0][2]],
+    [$rows[1][0], $rows[1][1], $rows[1][2]],
+    [$rows[2][0], $rows[2][1], $rows[2][2]],
     //diagonals
-    [$gameBoard[0][0], $gameBoard[1][1], $gameBoard[2][2]],
-    [$gameBoard[0][2], $gameBoard[1][1], $gameBoard[2][0]],
+    [$rows[0][0], $rows[1][1], $rows[2][2]],
+    [$rows[0][2], $rows[1][1], $rows[2][0]],
 ];
 
 echo "***Tic-tac-toe!***\n***Place your symbol by choosing coordinates on the board (example: 01)".PHP_EOL;
 $counter = 0;
 while($counter<10) {
-    foreach ($gameBoard as $row) {
+    foreach ($rows as $row) {
         foreach ($row as $cell) {
             echo $cell->symbol;
         }
@@ -72,17 +72,17 @@ while($counter<10) {
 
     if(count($playersChoice) != 2
         || !is_numeric(implode($playersChoice))
-        ||$playersChoice[0]>(count($gameBoard[0])-1)
-        ||$playersChoice[1]>(count($gameBoard[0])-1)) {
+        ||$playersChoice[0]>(count($rows[0])-1)
+        ||$playersChoice[1]>(count($rows[0])-1)) {
         echo"Invalid input!".PHP_EOL;
         continue;
     }
 
-    if($gameBoard[$playersChoice[1]][$playersChoice[0]]->symbol != ' - '){
+    if($rows[$playersChoice[1]][$playersChoice[0]]->symbol != ' - '){
         echo "This cell is already taken!".PHP_EOL;
         continue;
     }
-    $gameBoard[$playersChoice[1]][$playersChoice[0]]->symbol = $turn;
+    $rows[$playersChoice[1]][$playersChoice[0]]->symbol = $turn;
 
     $turn = $turn === $playerOne? $playerTwo : $playerOne;
     $counter++;
