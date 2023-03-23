@@ -23,9 +23,9 @@ function showBoard ($board){
     echo PHP_EOL;
     foreach ($board->rows as $row){
         foreach($row as $cell){
-        echo $cell;
+        echo "  |  $cell";
     }
-        echo PHP_EOL;
+        echo "  |".PHP_EOL;
     }
     echo PHP_EOL;
 }
@@ -64,7 +64,7 @@ $board = makeBoard($BOARD_SIZE, $EMPTY_SYMBOL);
 $rows = $board->rows;
 
 $counter = 0;
-echo"***Tic-tac-toe***\n--Place your symbol, choosing coordinates on the board (example 02)\n";
+echo"*** Tic-tac-toe ***\n\nPlace your symbol, choosing coordinates on the board (example 02)\n";
 while(true){
     showBoard($board);
     $winner = findWinner($board, $BOARD_SIZE, $EMPTY_SYMBOL);
@@ -86,7 +86,7 @@ while(true){
         ||$playerChoice[0]>(count($rows[0])-1)
         ||$playerChoice[1]>(count($rows[0])-1)
         ||$board->rows[$playerChoice[1]][$playerChoice[0]] != $EMPTY_SYMBOL) {
-        echo"Invalid input!".PHP_EOL;
+        echo"*** Invalid input! ***".PHP_EOL;
         continue;
     }
 
