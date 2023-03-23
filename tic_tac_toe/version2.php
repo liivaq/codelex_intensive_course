@@ -83,10 +83,12 @@ while($counter < $ROUNDS){
     if(count($playerChoice) != 2
         || !is_numeric(implode($playerChoice))
         ||$playerChoice[0]>(count($rows[0])-1)
-        ||$playerChoice[1]>(count($rows[0])-1)) {
+        ||$playerChoice[1]>(count($rows[0])-1)
+        ||$board->rows[$playerChoice[1]][$playerChoice[0]] != $EMPTY_SYMBOL) {
         echo"Invalid input!".PHP_EOL;
         continue;
     }
+
     $board->rows[$playerChoice[1]][$playerChoice[0]] = $TURN;
 
     updateWinningLines($winningLines, $playerChoice, $TURN, $BOARD_SIZE);
