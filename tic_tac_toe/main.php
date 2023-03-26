@@ -6,7 +6,7 @@ $EMPTY_SYMBOL = ' - ';
 $TURN = $PLAYER_ONE;
 $ROUNDS = $BOARD_SIZE*$BOARD_SIZE;
 
-function makeBoard($BOARD_SIZE, $EMPTY_SYMBOL): stdClass{
+function makeBoard(int $BOARD_SIZE,string $EMPTY_SYMBOL): stdClass{
     $board = new stdClass();
     $board->rows = [[]];
     $board->cell = $EMPTY_SYMBOL;
@@ -19,7 +19,7 @@ function makeBoard($BOARD_SIZE, $EMPTY_SYMBOL): stdClass{
     return $board;
 }
 
-function showBoard ($board){
+function showBoard (object $board):void{
     echo PHP_EOL;
     foreach ($board->rows as $row){
         foreach($row as $cell){
@@ -30,7 +30,7 @@ function showBoard ($board){
     echo PHP_EOL;
 }
 
-function findWinner($board, $BOARD_SIZE, $EMPTY_SYMBOL) {
+function findWinner(object $board,int $BOARD_SIZE,string $EMPTY_SYMBOL): bool {
     // Check rows
     for ($i = 0; $i < $BOARD_SIZE; $i++) {
         if (count(array_unique($board->rows[$i])) === 1 && $board->rows[$i][0] !== $EMPTY_SYMBOL) {
@@ -61,7 +61,6 @@ function findWinner($board, $BOARD_SIZE, $EMPTY_SYMBOL) {
 }
 
 $board = makeBoard($BOARD_SIZE, $EMPTY_SYMBOL);
-$rows = $board->rows;
 
 $counter = 0;
 echo"*** Tic-tac-toe ***\n\nPlace your symbol, choosing coordinates on the board (example 02)\n";
@@ -72,7 +71,7 @@ while(true){
         echo "*** $winner wins ***".PHP_EOL;
         exit;
     }
-    if($counter === $ROUNDS && !$winner){
+    if($counter === $ROUNDS){
         echo "*** It's a tie! ***".PHP_EOL;
         exit;
     }
@@ -83,8 +82,8 @@ while(true){
 
     if(count($playerChoice) != 2
         || !is_numeric(implode($playerChoice))
-        ||$playerChoice[0]>(count($rows[0])-1)
-        ||$playerChoice[1]>(count($rows[0])-1)
+        ||$playerChoice[0]>(count($board->rows[0])-1)
+        ||$playerChoice[1]>(count($board->rows[0])-1)
         ||$board->rows[$playerChoice[1]][$playerChoice[0]] != $EMPTY_SYMBOL) {
         echo"*** Invalid input! ***".PHP_EOL;
         continue;
