@@ -4,8 +4,7 @@
 
 $BOARD_ROWS = 3;
 $BOARD_COLUMNS = 4;
-$SYMBOLS = ["7", "A", "K", "Q", "J"];
-$SYMBOL_VALUES = [ "7"=> 7, "A" => 5, "K" => 4, "Q" => 3, "J" => 2];
+$SYMBOLS = [ "7"=> 7, "A" => 5, "K" => 4, "Q" => 3, "J" => 2];
 $MONEY = 100;
 
 function generateBoard (int $BOARD_ROWS,int $BOARD_COLUMNS,array $SYMBOLS):array {
@@ -13,7 +12,7 @@ function generateBoard (int $BOARD_ROWS,int $BOARD_COLUMNS,array $SYMBOLS):array
     for($i = 0; $i<$BOARD_ROWS; $i++){
         $board[$i] = [];
         for($j = 0; $j<$BOARD_COLUMNS; $j++){
-            $board[$i][$j] = $SYMBOLS[rand(0, (count($SYMBOLS)-1))];
+            $board[$i][$j] = array_rand($SYMBOLS);
         }
     }
     return $board;
@@ -73,11 +72,12 @@ while ($spin === ""){
     if($win){
         $winForSpin = 0;
         foreach($win as $money){
-            $MONEY += $SYMBOL_VALUES[$money];
-            $winForSpin += $SYMBOL_VALUES[$money];
+            $MONEY += $SYMBOLS[$money];
+            $winForSpin += $SYMBOLS[$money];
         }
-        echo "*** You have ". count($win) ." winning line(s)!".PHP_EOL;
-        echo "*** You won $winForSpin$ for this spin!".PHP_EOL;
+        echo "*** You have ". count($win) ." winning line(s)! ***".PHP_EOL;
+        echo "*** You won $winForSpin$ for this spin! ***".PHP_EOL;
+        echo "*** You have $MONEY$ ***".PHP_EOL;
     }
     if($MONEY === 0){
         echo "Sorry, you've lost all your money! Come back another time.".PHP_EOL;
