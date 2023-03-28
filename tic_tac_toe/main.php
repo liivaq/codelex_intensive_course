@@ -30,7 +30,7 @@ function showBoard (object $board):void{
     echo PHP_EOL;
 }
 
-function findWinner(object $board,int $BOARD_SIZE,string $EMPTY_SYMBOL): bool {
+function findWinner(object $board,int $BOARD_SIZE,string $EMPTY_SYMBOL) {
     // Check rows
     for ($i = 0; $i < $BOARD_SIZE; $i++) {
         if (count(array_unique($board->rows[$i])) === 1 && $board->rows[$i][0] !== $EMPTY_SYMBOL) {
