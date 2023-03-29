@@ -22,7 +22,7 @@ foreach ($vendingMachine as $key => $product) {
 
 $selectedProduct = null;
 while(!$selectedProduct) {
-    $selection = (int)readline("Select your product: ");
+    $selection = readline("Select your product: ");
     if (!array_key_exists($selection, $vendingMachine)){
         echo "***Invalid selection***".PHP_EOL;
         continue;
@@ -30,9 +30,10 @@ while(!$selectedProduct) {
     $selectedProduct = $vendingMachine[$selection];
 }
 
-echo "--------------------------------------------------" . PHP_EOL;
+echo "_____________________________________________" . PHP_EOL;
+echo "Allowed coins: 2, 1, 0.50, 0.20, 0.01, 0.02\n";
+echo "_____________________________________________" . PHP_EOL;
 echo "You have selected: $selectedProduct->name" . PHP_EOL;
-echo "--- Allowed coins: 2, 1, 0.50, 0.20, 0.01, 0.02 ---".PHP_EOL;
 $payment = 0;
 $reminder = $selectedProduct->price;
 
@@ -45,7 +46,7 @@ while ($payment < $selectedProduct->price) {
         continue;
     }
     $insertedCoin = $coins[$insertedCoin];
-    echo"--------------------------------------------------".PHP_EOL;
+    echo"_____________________________________________".PHP_EOL;
 
     if ($insertedCoin > $reminder) {
         $coinsToGive = $insertedCoin - $reminder;
