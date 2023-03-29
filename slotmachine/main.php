@@ -2,10 +2,9 @@
 
 //Slot machine
 
-$BOARD_ROWS = 3;
-$BOARD_COLUMNS = 4;
-$SYMBOLS = [ "7"=> 7, "A" => 5, "K" => 4, "Q" => 3, "J" => 2];
-$MONEY = 100;
+$board_rows = 3;
+$board_columns = 4;
+$symbols = [ "7"=> 7, "A" => 5, "K" => 4, "Q" => 3, "J" => 2];
 
 function generateBoard (int $BOARD_ROWS,int $BOARD_COLUMNS,array $SYMBOLS):array {
     $board = [];
@@ -30,60 +29,70 @@ function showBoard (array $board): void{
 }
 
 function findWinningLines(array $board): array{
-    $winningSymbols =[];
-    $winningLines = [
-        ["00", "01", "02", "03"],
-        ["10", "11", "12", "13"],
-        ["20", "21", "22", "23"],
-        ["00", "11", "22", "23"],
-        ["20", "21", "12", "03"],
-        ["00", "01", "12", "23"],
-        ["20", "11", "02", "03"],
-        ["00", "10", "20"],
-        ["01", "11", "21"],
-        ["02", "12", "22"],
-        ["03", "13", "23"],
+    $winningLines =[
+        //rows
+        [$board[0][0], $board[0][1], $board[0][2], $board[0][3]],
+        [$board[1][0], $board[1][1], $board[1][2], $board[1][3]],
+        [$board[2][0], $board[2][1], $board[2][2], $board[2][3]],
+        //diagonals +corner
+        [$board[0][0], $board[1][1], $board[2][2], $board[2][3]],
+        [$board[2][0], $board[2][1], $board[1][2], $board[0][3]],
+        [$board[0][0], $board[0][1], $board[1][2], $board[2][3]],
+        [$board[2][0], $board[1][1], $board[0][2], $board[0][3]],
+        //middle +both corners
+        [$board[0][0], $board[1][1], $board[1][2], $board[0][3]],
+        [$board[2][0], $board[1][1], $board[1][2], $board[2][3]]
     ];
 
-    for($i = 0; $i<count($winningLines); $i++){
-        $winningLine = $winningLines[$i];
-        $symbols = [];
-        foreach($winningLine as $cell){
-            $x = str_split($cell)[1];
-            $y = str_split($cell)[0];
-            $symbols[]= $board[$y][$x];
-        }
-        if(count(array_unique($symbols)) === 1){
-            $winningSymbols[] = $symbols[0];
+    $winningSymbols =[];
+    foreach($winningLines as $line){
+        if(count(array_unique($line)) === 1){
+            $winningSymbols[] = $line[0];
         }
     }
     return $winningSymbols;
 }
-
 echo"$$$ Ready to win some money? $$$\n   ~~~~~ GOOD LUCK! ~~~~~   ".PHP_EOL.PHP_EOL;
+
+$wallet = null;
+while (!$wallet){
+    $wallet = (int) readline("Put some money in the bank: ");
+    if(!is_numeric($wallet)){
+        echo "Invalid input";
+    }
+}
+$amountWon = 0;
+$gamesPlayed = 0;
 $spin = readline("Spin for $1? (press enter to play or type anything else to exit) ");
 while ($spin === ""){
-    $MONEY --;
+    $gamesPlayed ++;
+    $wallet --;
     echo PHP_EOL;
-    echo "*** You have: $MONEY$ in total".PHP_EOL;
-    $board = generateBoard($BOARD_ROWS, $BOARD_COLUMNS, $SYMBOLS);
+    echo "You have: $wallet$ reminding".PHP_EOL;
+    $board = generateBoard($board_rows, $board_columns, $symbols);
     showBoard($board);
     $win = findWinningLines($board);
     if($win){
         $winForSpin = 0;
         foreach($win as $money){
-            $MONEY += $SYMBOLS[$money];
-            $winForSpin += $SYMBOLS[$money];
+            $wallet += $symbols[$money];
+            $winForSpin += $symbols[$money];
+            $amountWon += $symbols[$money];
         }
         echo "*** You have ". count($win) ." winning line(s)! ***".PHP_EOL;
         echo "*** You won $winForSpin$ for this spin! ***".PHP_EOL;
-        echo "*** You have $MONEY$ ***".PHP_EOL;
+        echo "*** You have $wallet$ ***".PHP_EOL;
     }
-    if($MONEY === 0){
+    if($wallet === 0){
         echo "Sorry, you've lost all your money! Come back another time.".PHP_EOL;
         exit;
     }
     $spin = readline("Spin for $1? (press enter for yes or type anything else to exit) ");
+}
+
+if($spin != ""){
+    echo "*** Thanks for playing! ***".PHP_EOL;
+    echo "In total you won: $amountWon$\nYou played $gamesPlayed games\nYou have $wallet $ reminding\n";
 }
 
 
