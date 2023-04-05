@@ -1,6 +1,6 @@
 <?php
 
-//todo insert your api key
+//todo insert your api key here
 $apiKey = '';
 
 $city = readline("Enter a city to get today's weather: ");
