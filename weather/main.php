@@ -1,6 +1,7 @@
 <?php
 
-$apiKey = 'c091f51dbced57102b4550d2f72c806b';
+//todo insert your api key
+$apiKey = '';
 
 $city = readline("Enter a city to get today's weather: ");
 $url = "https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric";
