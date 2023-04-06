@@ -3,7 +3,7 @@
 require_once 'Movie.php';
 require_once 'MovieCollection.php';
 
-$movies = new MovieCollection();
+$movies = new MovieCollection([]);
 
 $movieCasino = new Movie("Casino Royal", "Eon Productions", "PG13");
 $movieGlass = new Movie ("Glass", "Buena Vista International", "PG13");
