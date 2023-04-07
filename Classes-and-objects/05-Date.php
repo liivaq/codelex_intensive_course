@@ -9,9 +9,9 @@ class Date
     function __construct($day, $month, $year)
     {
         if (checkdate($month, $day, $year)) {
-            $this->setDay($day);
-            $this->setMonth($month);
-            $this->setYear($year);
+            $this->day = $day;
+            $this->month = $month;
+            $this->year = $year;
         } else {
             echo "This date doesn't exist!";
             exit;
@@ -35,17 +35,29 @@ class Date
 
     public function setDay(int $day): void
     {
-        $this->day = $day;
+        if (checkdate($this->month, $day, $this->year)) {
+            $this->day = $day;
+        }else{
+            echo "This date doesn't exist!\n";
+        }
     }
 
     public function setMonth(int $month): void
     {
-        $this->month = $month;
+        if (checkdate($month, $this->day, $this->year)) {
+            $this->month = $month;
+        }else{
+            echo "This date doesn't exist!\n";
+        };
     }
 
     public function setYear(int $year): void
     {
-        $this->year = $year;
+        if (checkdate($this->month, $this->day, $year)) {
+            $this->year = $year;
+        }else{
+            echo "This date doesn't exist!\n";
+        }
     }
 
     public function displayDate(): void
@@ -57,3 +69,5 @@ class Date
 
 $date = new Date(9, 02, 2022);
 $date->displayDate();
+
+$date->setMonth(13);
