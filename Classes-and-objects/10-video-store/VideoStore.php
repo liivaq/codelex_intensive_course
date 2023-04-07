@@ -11,6 +11,10 @@ class VideoStore
         }
     }
 
+    function getInventory():array{
+        return $this->inventory;
+    }
+
     function addVideoToInventory(Video $video)
     {
         $this->inventory[] = $video;

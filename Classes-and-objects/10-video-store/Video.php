@@ -6,7 +6,8 @@ class Video
     private array $ratings = [];
     private bool $isInStore;
 
-    public function __construct(string $title, bool $inStore = true){
+    public function __construct(string $title, bool $inStore = true)
+    {
         $this->title = $title;
         $this->isInStore = $inStore;
     }
@@ -35,7 +36,7 @@ class Video
 
     public function getAverageRating()
     {
-        if(!empty($this->ratings)) {
+        if (!empty($this->ratings)) {
             return array_sum($this->ratings) / count($this->ratings);
         }
         return "Not rated";
