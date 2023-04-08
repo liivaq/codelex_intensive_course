@@ -15,13 +15,11 @@ class Video
     public function rentVideo()
     {
         $this->isInStore = false;
-
     }
 
     public function returnToStore()
     {
         $this->isInStore = true;
-
     }
 
     public function checkStatus(): bool
