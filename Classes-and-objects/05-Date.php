@@ -62,7 +62,7 @@ class Date
 
     public function displayDate(): void
     {
-        echo $this->getDay() . '/' . $this->getMonth() . "/" . $this->getYear() . "\n";
+        echo $this->getDay() . '/' . $this->getMonth() . '/' . $this->getYear() . "\n";
     }
 
 }
@@ -70,4 +70,4 @@ class Date
 $date = new Date(9, 02, 2022);
 $date->displayDate();
 
-$date->setMonth(13);
+$testWrongDate = new Date(34, 05, 2022);

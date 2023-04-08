@@ -8,7 +8,7 @@ class Video
 
     public function __construct(string $title, bool $inStore = true)
     {
-        $this->title = $title;
+        $this->title = strtoupper($title);
         $this->isInStore = $inStore;
     }
 
@@ -37,9 +37,9 @@ class Video
     public function getAverageRating()
     {
         if (!empty($this->ratings)) {
-            return array_sum($this->ratings) / count($this->ratings);
+            return number_format(array_sum($this->ratings) / count($this->ratings), 1);
         }
-        return "Not rated";
+        return 'Not rated';
     }
 
     public function getTitle(): string

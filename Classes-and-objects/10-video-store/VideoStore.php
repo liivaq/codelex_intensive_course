@@ -4,14 +4,15 @@ class VideoStore
 {
     private array $inventory;
 
-    function __construct(...$videos)
+    function __construct(Video...$videos)
     {
         foreach ($videos as $video) {
             $this->inventory[] = $video;
         }
     }
 
-    function getInventory():array{
+    function getInventory(): array
+    {
         return $this->inventory;
     }
 
@@ -49,13 +50,15 @@ class VideoStore
 
     function listInventory()
     {
+        echo '———————————————————————————————————————————' . PHP_EOL;
         foreach ($this->inventory as $video) {
-            echo $video->getTitle() . " | Average rating: " . $video->getAverageRating() . " | ";
+            echo " » " . $video->getTitle() . " « " . "\n  Average rating: " . $video->getAverageRating() . "\n  Status: ";
             if ($video->checkStatus()) {
                 echo "In Store" . PHP_EOL;
             } else {
                 echo "Not in Store" . PHP_EOL;
             }
         }
+        echo '———————————————————————————————————————————' . PHP_EOL;
     }
 }

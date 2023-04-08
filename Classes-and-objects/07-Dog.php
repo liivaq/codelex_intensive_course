@@ -13,9 +13,10 @@ class Dog
         $this->sex = $sex;
         $this->mother = $mother;
         $this->father = $father;
+
     }
 
-    public function fathersName(): string
+    public function getFathersName(): string
     {
         return $this->father->name ?? "Unknown";
     }
@@ -37,6 +38,11 @@ class Dog
     {
         return $this->name;
     }
+
+    public function getSex(): string
+    {
+        return $this->sex;
+    }
 }
 
 $sparky = new Dog('Sparky', 'male');
@@ -48,9 +54,13 @@ $max = new Dog('Max', 'male', $lady, $rocky);
 $buster = new Dog('Buster', 'male', $lady, $sparky);
 $coco = new Dog('Coco', 'female', $molly, $buster);
 
-echo "Coco's father is: " . $coco->fathersName() . PHP_EOL;
-echo "Sparky's father is: " . $sparky->fathersName() . PHP_EOL;
+echo "Coco's father is: " . $coco->getFathersName() . PHP_EOL;
+echo "Sparky's father is: " . $sparky->getFathersName() . PHP_EOL;
+
 if ($coco->hasSameMotherAs($rocky)) {
     echo $coco->getName() . " has the same mother as " . $rocky->getName() . PHP_EOL;
+} else {
+    echo $coco->getName() . '\'s mother is ' . $coco->getMother()->getName() . PHP_EOL;
+    echo $rocky->getName() . '\'s mother is ' . $rocky->getMother()->getName() . PHP_EOL;
 };
 
