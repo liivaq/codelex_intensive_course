@@ -26,7 +26,7 @@ class Application
                     exit;
                 case 2:
                     $title = strtoupper(readline('Video title: '));
-                    if (self::checkIfExists($store, $title)) {
+                    if ($store->checkIfExists($title)) {
                         echo '*** This video is already in the inventory! ***' . PHP_EOL;
                         break;
                     }
@@ -38,11 +38,11 @@ class Application
                     break;
                 case 4:
                     $title = strtoupper(readline('Enter title of the video you want to rent: '));
-                    if (!self::checkIfExists($store, $title)) {
+                    if (!$store->checkIfExists($title)) {
                         echo '*** Sorry, the store does not have this video! ***' . PHP_EOL;
                         break;
                     }
-                    if (!self::checkIfInStore($store, $title)) {
+                    if (!$store->checkIfInStore($title)) {
                         echo '*** Sorry, this video is not in store at the moment! ***' . PHP_EOL;
                         break;
                     }
@@ -50,28 +50,27 @@ class Application
                     echo '*** Success! Video rented! ***' . PHP_EOL;
                     break;
                 case 5:
-                    $title = null;
-                    while ($title === null) {
-                        $userInput = strtoupper(readline('Enter title of the video you want to return: '));
-                        if (!self::checkIfExists($store, $userInput)) {
-                            echo '*** Sorry, this video does not exist! Check your spelling. ***' . PHP_EOL;
-                            continue;
-                        }
-                        $title = $userInput;
-                    }
 
-                    if (self::checkIfInStore($store, $title)) {
+                    $title = strtoupper(readline('Enter title of the video you want to return: '));
+                    if ($store->checkIfInStore($title)) {
                         echo '*** Sorry, the video you want to return is already in store! ***' . PHP_EOL;
                         break;
                     }
+
+                    if (!$store->checkIfExists($title)) {
+                        echo '*** Sorry, this video does not exist! Check your spelling. ***' . PHP_EOL;
+                        break;
+                    }
+
                     $store->returnVideo($title);
                     echo '*** Success! The video has been returned to the store! ***' . PHP_EOL;
+
                     break;
                 case 6:
                     $title = null;
                     while ($title === null) {
                         $userInput = strtoupper(readline('Enter title of the video you want to rate: '));
-                        if (!self::checkIfExists($store, $userInput)) {
+                        if (!$store->checkIfExists($userInput)) {
                             echo '*** Sorry, this video does not exist - check your spelling! ***' . PHP_EOL;
                             continue;
                         }
@@ -95,26 +94,6 @@ class Application
                     echo '*** Sorry, I don\'t understand you... ***' . PHP_EOL;
             }
         }
-    }
-
-    private function checkIfExists($store, $title): bool
-    {
-        foreach ($store->getInventory() as $video) {
-            if ($video->getTitle() === $title) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private function checkIfInStore($store, $title): bool
-    {
-        foreach ($store->getInventory() as $video) {
-            if ($video->getTitle() === $title) {
-                return $video->checkStatus();
-            }
-        }
-        return false;
     }
 }
 

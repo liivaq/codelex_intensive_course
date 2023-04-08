@@ -36,7 +36,7 @@ class VideoStore
             if ($video->getTitle() === $videoTitle) {
                 $video->returnToStore();
             }
-        };
+        }
     }
 
     function addNewRating(int $rating, string $videoTitle)
@@ -45,12 +45,33 @@ class VideoStore
             if ($video->getTitle() === $videoTitle) {
                 $video->addRating($rating);
             }
-        };
+        }
+    }
+
+    public function checkIfInStore($title): bool
+    {
+        foreach ($this->getInventory() as $video) {
+            if ($video->getTitle() === $title) {
+                return $video->checkStatus();
+            }
+        }
+        return false;
+    }
+
+    public function checkIfExists($title): bool
+    {
+        foreach ($this->getInventory() as $video) {
+            if ($video->getTitle() === $title) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function listInventory()
     {
         echo '———————————————————————————————————————————' . PHP_EOL;
+        sort($this->inventory);
         foreach ($this->inventory as $video) {
             echo " » " . $video->getTitle() . " « " . "\n  Average rating: " . $video->getAverageRating() . "\n  Status: ";
             if ($video->checkStatus()) {

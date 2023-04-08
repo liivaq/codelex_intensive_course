@@ -34,12 +34,12 @@ class Video
         $this->ratings[] = $rating;
     }
 
-    public function getAverageRating()
+    public function getAverageRating(): string
     {
         if (!empty($this->ratings)) {
             return number_format(array_sum($this->ratings) / count($this->ratings), 1);
         }
-        return 'Not rated';
+        return "Not rated";
     }
 
     public function getTitle(): string
