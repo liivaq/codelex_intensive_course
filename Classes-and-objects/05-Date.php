@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+//fyi there exists an inbuilt PHP class DateTime;
+
 class Date
 {
     private int $day;
@@ -13,8 +15,10 @@ class Date
             $this->month = $month;
             $this->year = $year;
         } else {
-            echo "This date doesn't exist!";
-            exit;
+            $this->day = (int)date('d');
+            $this->month = (int)date('m');
+            $this->year = (int)date('Y');
+            echo 'The date you entered does not exist. Date has been set to current date' . PHP_EOL;
         }
     }
 
@@ -37,8 +41,8 @@ class Date
     {
         if (checkdate($this->month, $day, $this->year)) {
             $this->day = $day;
-        }else{
-            echo "This date doesn't exist!\n";
+        } else {
+            echo 'Date not changed - entered date does not exist!' . PHP_EOL;
         }
     }
 
@@ -46,17 +50,17 @@ class Date
     {
         if (checkdate($month, $this->day, $this->year)) {
             $this->month = $month;
-        }else{
-            echo "This date doesn't exist!\n";
-        };
+        } else {
+            echo 'Date not changed - entered date does not exist!' . PHP_EOL;
+        }
     }
 
     public function setYear(int $year): void
     {
         if (checkdate($this->month, $this->day, $year)) {
             $this->year = $year;
-        }else{
-            echo "This date doesn't exist!\n";
+        } else {
+            echo 'Date not changed - entered date does not exist!' . PHP_EOL;
         }
     }
 
@@ -71,3 +75,4 @@ $date = new Date(9, 02, 2022);
 $date->displayDate();
 
 $testWrongDate = new Date(34, 05, 2022);
+$testWrongDate->displayDate();

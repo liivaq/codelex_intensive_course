@@ -6,9 +6,7 @@ class VideoStore
 
     function __construct(Video ...$videos)
     {
-        foreach ($videos as $video) {
-            $this->inventory[] = $video;
-        }
+        array_push($this->inventory, ...$videos);
     }
 
     function getInventory(): array

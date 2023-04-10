@@ -46,9 +46,7 @@ class TestCode
         foreach ($products as $product) {
             $product->printProduct();
         }
-
     }
-
 }
 
 TestCode::main();

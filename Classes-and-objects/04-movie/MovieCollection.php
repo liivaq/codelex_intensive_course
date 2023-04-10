@@ -2,14 +2,14 @@
 
 class MovieCollection
 {
-    private array $collection;
+    private array $collection = [];
 
-    function __construct($collection = [])
+    public function __construct(Movie ...$movies)
     {
-        $this->collection = $collection;
+        array_push($this->collection, ...$movies);
     }
 
-    public function getPG($rating): array
+    public function getPG(string $rating): array
     {
         $ratedMovies = [];
         foreach ($this->collection as $movie) {
@@ -22,8 +22,6 @@ class MovieCollection
 
     public function addToCollection(Movie ...$movies)
     {
-        foreach ($movies as $movie) {
-            $this->collection[] = $movie;
-        }
+        array_push($this->collection, ...$movies);
     }
 }

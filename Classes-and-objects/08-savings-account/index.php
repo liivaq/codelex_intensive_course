@@ -17,9 +17,11 @@ for($i=1; $i<=$months; $i++){
     $deposit = (int)readline("Enter amount deposited for month: $i: ");
     $account->deposit($deposit);
     $totalDeposit += $deposit;
+
     $withdrawal = (int) readline("Enter the amount withdrawn for month: $i: ");
     $account->withdraw($withdrawal);
     $totalWithdrawn += $withdrawal;
+
     $interestEarned += $account->getMonthlyInterest();
     $account->addMonthlyInterest();
 }
