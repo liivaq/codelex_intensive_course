@@ -4,7 +4,7 @@ class FuelGauge
 {
     private int $fuelLevel;
 
-    function __construct($fuelLevel)
+    function __construct(int $fuelLevel)
     {
         $this->fuelLevel = $fuelLevel;
     }
@@ -14,9 +14,11 @@ class FuelGauge
         return $this->fuelLevel;
     }
 
-    public function fillTank()
+    public function fillTank(int $amount)
     {
-        $this->fuelLevel++;
+        if($amount > 0) {
+            $this->fuelLevel += $amount;
+        }
     }
 
     public function useFuel()

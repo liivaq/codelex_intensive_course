@@ -13,12 +13,11 @@ class BankAccount{
     public function showUserNameAndBalance (): string{
         $balance = number_format(abs($this->balance), 2);
         if($this->balance <0){
-            return $this->name.", -$".$balance;
+            return $this->name.', -$'.$balance;
         }
-
-        return $this->name.", $".$balance;
+        return $this->name.', $'.$balance;
     }
 }
 
-$benson = new BankAccount("Benson", -17.50);
+$benson = new BankAccount('Benson', -17.50);
 echo $benson->showUserNameAndBalance();

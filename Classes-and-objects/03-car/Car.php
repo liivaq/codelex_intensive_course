@@ -2,8 +2,8 @@
 
 class Car
 {
-    private object $fuelGauge;
-    private object $odoMeter;
+    private FuelGauge $fuelGauge;
+    private Odometer $odoMeter;
     private int $fuelEconomy; // how many kms per liter
     private int $tankSize;
     private int $distanceCounter = 0;
@@ -16,7 +16,7 @@ class Car
         $this->tankSize = $tankSize;
     }
 
-    public function getOdometer(): object
+    public function getOdometer(): Odometer
     {
         return $this->odoMeter;
     }
@@ -26,16 +26,17 @@ class Car
         return $this->tankSize;
     }
 
-    public function getFuelGauge(): object
+    public function getFuelGauge(): FuelGauge
     {
         return $this->fuelGauge;
     }
 
     public function drive()
     {
-        $this->odoMeter->increaseMileage();
-        $this->distanceCounter++;
-
+        if($this->getFuelGauge()->getFuelLevel() > 0) {
+            $this->odoMeter->increaseMileage();
+            $this->distanceCounter++;
+        }
         if ($this->distanceCounter === $this->fuelEconomy) {
             $this->fuelGauge->useFuel();
             $this->distanceCounter = 0;

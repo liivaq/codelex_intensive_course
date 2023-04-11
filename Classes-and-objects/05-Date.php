@@ -1,7 +1,5 @@
 <?php declare(strict_types=1);
 
-//fyi there exists an inbuilt PHP class DateTime;
-
 class Date
 {
     private int $day;

@@ -11,14 +11,14 @@ class Point
         $this->y = $y;
     }
 
-    public function swapPoints($p1, $p2)
+    public function swapPoints(Point $toSwapWith)
     {
-        $tempX = $p1->x;
-        $tempY = $p1->y;
-        $p1->x = $p2->x;
-        $p1->y = $p2->y;
-        $p2->x = $tempX;
-        $p2->y = $tempY;
+        $tempX = $this->x;
+        $tempY = $this->y;
+        $this->x = $toSwapWith->x;
+        $this->y = $toSwapWith->y;
+        $toSwapWith->x = $tempX;
+        $toSwapWith->y = $tempY;
     }
 
     public function getX(): int
@@ -32,9 +32,15 @@ class Point
     }
 }
 
-$p1 = new Point(5, 2);
-$p2 = new Point (-3, 6);
-$p1->swapPoints($p1, $p2);
+$point1 = new Point(5, 2);
+$point2 = new Point (-3, 6);
 
-echo "(" . $p1->getX() . ", " . $p1->getY() . ")\n";
-echo "(" . $p2->getX() . ", " . $p2->getY() . ")\n";
+echo 'Points before swapping: ' . PHP_EOL;
+echo 'Point 1: (' . $point1->getX() . ', ' . $point1->getY() . ')' . PHP_EOL;
+echo 'Point 2: (' . $point2->getX() . ', ' . $point2->getY() . ')' . PHP_EOL;
+
+$point1->swapPoints($point2);
+
+echo 'Points after swapping: ' . PHP_EOL;
+echo 'Point 1: (' . $point1->getX() . ', ' . $point1->getY() . ')' . PHP_EOL;
+echo 'Point 2: (' . $point2->getX() . ', ' . $point2->getY() . ')' . PHP_EOL;;

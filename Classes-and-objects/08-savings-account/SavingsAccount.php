@@ -22,11 +22,11 @@ class SavingsAccount
 
     public function getMonthlyInterest()
     {
-        return (($this->annualInterestRate / 12) * $this->balance);
+        return ($this->annualInterestRate / 12 /100) * $this->balance;
     }
 
     public function addMonthlyInterest(){
-        $this->balance += (($this->annualInterestRate / 12) * $this->balance);
+        $this->balance += $this->getMonthlyInterest();
     }
 
     public function setAnnualInterestRate($rate){
