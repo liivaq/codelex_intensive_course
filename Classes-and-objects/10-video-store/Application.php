@@ -105,7 +105,7 @@ class Application
 
         $rating = null;
         while ($rating === null) {
-            $userInput = (int)readline('Enter rating from 1 to 5: ');
+            $userInput = (int)round((float)readline('Enter rating from 1 to 5: '));
             if ($userInput <= 0 || $userInput > 5) {
                 echo '*** Invalid rating. Please input rating from 1 to 5 ***' . PHP_EOL;
                 continue;
