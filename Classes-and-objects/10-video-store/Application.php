@@ -53,17 +53,17 @@ class Application
 
     private function addVideo(): string
     {
-        $title = strtoupper(readline('Video title: '));
+        $title = $this->formatInput(readline('Video title: '));
         if ($this->store->checkIfExists($title)) {
-            return '*** This video is already in the inventory! ***' . PHP_EOL;
+            return '*** ' . $title . ' is already in the inventory! ***' . PHP_EOL;
         }
         $this->store->addVideoToInventory(new Video($title));
-        return '*** Successfully added to the inventory! ***' . PHP_EOL;
+        return '*** ' . $title . ' successfully added to the inventory! ***' . PHP_EOL;
     }
 
     private function rentVideo(): string
     {
-        $title = strtoupper(readline('Enter title of the video you want to rent: '));
+        $title = $this->formatInput(readline('Enter title of the video you want to rent: '));
         if (!$this->store->checkIfExists($title)) {
             return '*** Sorry, the store does not have this video! ***' . PHP_EOL;
 
@@ -72,12 +72,12 @@ class Application
             return '*** Sorry, this video is not in store at the moment! ***' . PHP_EOL;
         }
         $this->store->rentVideo($title);
-        return '*** Success! Video rented! ***' . PHP_EOL;
+        return '*** Success! ' . $title . ' rented! ***' . PHP_EOL;
     }
 
     private function returnVideo(): string
     {
-        $title = strtoupper(readline('Enter title of the video you want to return: '));
+        $title = $this->formatInput(readline('Enter title of the video you want to return: '));
         if ($this->store->checkIfInStore($title)) {
             return '*** Sorry, the video you want to return has been returned already! ***' . PHP_EOL;
         }
@@ -87,7 +87,7 @@ class Application
         }
 
         $this->store->returnVideo($title);
-        return '*** Success! The video has been returned to the store! ***' . PHP_EOL;
+        return '*** Success! ' . $title . ' has been returned to the store! ***' . PHP_EOL;
 
     }
 
@@ -95,7 +95,7 @@ class Application
     {
         $title = null;
         while ($title === null) {
-            $userInput = strtoupper(readline('Enter title of the video you want to rate: '));
+            $userInput = $this->formatInput(readline('Enter title of the video you want to rate: '));
             if (!$this->store->checkIfExists($userInput)) {
                 echo '*** Sorry, this video does not exist - check your spelling! ***' . PHP_EOL;
                 continue;
@@ -105,7 +105,7 @@ class Application
 
         $rating = null;
         while ($rating === null) {
-            $userInput = (int)round((float)readline('Enter rating from 1 to 5: '));
+            $userInput = (int)round((float)trim(readline('Enter rating from 1 to 5: ')));
             if ($userInput <= 0 || $userInput > 5) {
                 echo '*** Invalid rating. Please input rating from 1 to 5 ***' . PHP_EOL;
                 continue;
@@ -114,7 +114,7 @@ class Application
         }
 
         $this->store->addNewRating($rating, $title);
-        return '*** Success! Rating added ***' . PHP_EOL;
+        return '*** Success! Rating of ' . $rating . ' added to ' . $title . ' ***' . PHP_EOL;
 
     }
 
@@ -131,6 +131,10 @@ class Application
         }
         echo '———————————————————————————————————————————' . PHP_EOL;
 
+    }
+
+    private function formatInput($input): string{
+        return trim(strtoupper($input));
     }
 }
 
