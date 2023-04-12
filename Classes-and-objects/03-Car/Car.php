@@ -32,13 +32,14 @@ class Car
 
     public function drive()
     {
-        if($this->getFuelGauge()->getLiters() > 0) {
+        if ($this->getFuelGauge()->getLiters() > 0) {
             $this->odoMeter->increaseMileage();
             $this->fuelGauge->useFuel($this->fuelEconomy);
         }
     }
 
-    public function getFuelEconomy(){
+    public function getFuelEconomy(): int
+    {
         return $this->fuelEconomy;
     }
 }

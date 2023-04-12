@@ -3,6 +3,7 @@
 class VideoStore
 {
     private array $inventory = [];
+    private array $customers = [];
 
     function __construct(Video ...$videos)
     {
@@ -27,5 +28,28 @@ class VideoStore
             }
         }
         return false;
+    }
+
+    public function newCustomer(Customer $customer){
+        $this->customers[] = $customer;
+    }
+
+    public function getCustomerByUsername(string $username): ?Customer
+    {
+        foreach ($this->customers as $customer){
+            if($customer->getUsername() === $username){
+                return $customer;
+            }
+        }
+        return null;
+    }
+
+    public function getCustomers(): array
+    {
+        return $this->customers;
+    }
+
+    public function getVideoID(Video $video):int{
+        return array_search($video, $this->inventory);
     }
 }

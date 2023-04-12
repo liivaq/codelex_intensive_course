@@ -2,9 +2,9 @@
 
 require_once 'Car.php';
 require_once 'FuelGauge.php';
-require_once 'OdoMeter.php';
+require_once 'Odometer.php';
 
-$car = new Car(new FuelGauge(0), new Odometer(999900), 70, 19);
+$car = new Car(new FuelGauge(0), new Odometer(999900), 70, 8);
 
 while (true) {
     $amountToFill = null;
