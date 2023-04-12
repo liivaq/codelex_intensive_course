@@ -18,6 +18,3 @@ class BankAccount{
         return $this->name.', $'.$balance;
     }
 }
-
-$benson = new BankAccount('Benson', -17.50);
-echo $benson->showUserNameAndBalance();

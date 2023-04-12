@@ -4,7 +4,7 @@ require_once 'Car.php';
 require_once 'FuelGauge.php';
 require_once 'OdoMeter.php';
 
-$car = new Car(new FuelGauge(0), new Odometer(999900));
+$car = new Car(new FuelGauge(0), new Odometer(999900), 70, 19);
 
 while (true) {
     $amountToFill = null;
@@ -14,14 +14,14 @@ while (true) {
             echo 'Error! Your car\'s tank size is only ' . $car->getTankSize() . ' l.' . PHP_EOL;
             continue;
         }
-        if ($amount === 0) {
-            echo 'You sure about the amount? That won\'t get you far' . PHP_EOL;
+        if ($amount <= 0) {
+            echo 'You sure about that? That won\'t get you far.' . PHP_EOL;
             continue;
         }
         $amountToFill = $amount;
     }
     $car->getFuelGauge()->fillTank($amountToFill);
-    echo 'Tank filled. You have ' . $car->getFuelGauge()->getFuelLevel() . ' l of fuel' . PHP_EOL;
+    echo 'Tank filled. You have ' . $car->getFuelGauge()->getLiters() . ' l of fuel' . PHP_EOL;
 
     $drive = null;
     while ($drive !== 1) {
@@ -38,12 +38,14 @@ while (true) {
         }
     }
 
-    while ($car->getFuelGauge()->getFuelLevel() !== 0) {
+    while ($car->getFuelGauge()->getLiters() > $car->getFuelEconomy()/100) {
         $car->drive();
         echo "Current mileage is: {$car->getOdometer()->getMileage()} km\n";
-        echo "Amount of fuel left: {$car->getFuelGauge()->getFuelLevel()} l\n";
+        if($car->getFuelGauge()->getLiters() < 0){
+            break;
+        }
+        echo "Amount of fuel left: {$car->getFuelGauge()->getLiters()} l\n";
     }
 
-    echo '*** You ran out of fuel! Fill up to continue driving ***' . PHP_EOL;
-
+    echo '*** Your tank is almost empty! Fill up to continue driving! ***'.PHP_EOL;
 }

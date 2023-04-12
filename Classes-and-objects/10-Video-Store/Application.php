@@ -6,9 +6,9 @@ class Application
 {
     private VideoStore $store;
 
-    public function __construct()
+    public function __construct(VideoStore $store)
     {
-        $this->store = new VideoStore(new Video('Matrix'), new Video('Interstellar'), new Video('Joker'));
+        $this->store = $store;
     }
 
     function run()
@@ -28,7 +28,7 @@ class Application
 
             switch ($command) {
                 case 1:
-                    echo '*** Thanks for using The Vide Store! Hope to see you again soon ***' . PHP_EOL;
+                    echo '*** Thanks for using The Video Store! Hope to see you again soon ***' . PHP_EOL;
                     exit;
                 case 2:
                     echo $this->addVideo();
@@ -53,7 +53,7 @@ class Application
 
     private function addVideo(): string
     {
-        $title = $this->formatInput(readline('Video title: '));
+        $title = trim(strtoupper(readline('Video title: ')));
         if ($this->store->checkIfExists($title)) {
             return '*** ' . $title . ' is already in the inventory! ***' . PHP_EOL;
         }
@@ -63,45 +63,53 @@ class Application
 
     private function rentVideo(): string
     {
-        $title = $this->formatInput(readline('Enter title of the video you want to rent: '));
-        if (!$this->store->checkIfExists($title)) {
-            return '*** Sorry, the store does not have this video! ***' . PHP_EOL;
+        $this->listInventory();
+        $index = (int)readline('Enter ID of the video you want to rent: ');
+        $inventory = $this->store->getInventory();
+        if (!isset($inventory[$index])) {
+            return "*** This video doesn't exist. Check entered ID. ***" . PHP_EOL;
+        }
+        /** @var Video $video */
+        $video = $inventory[$index];
 
-        }
-        if (!$this->store->checkIfInStore($title)) {
-            return '*** Sorry, this video is not in store at the moment! ***' . PHP_EOL;
-        }
-        $this->store->rentVideo($title);
-        return '*** Success! ' . $title . ' rented! ***' . PHP_EOL;
+        $video->rent();
+        return '*** Success! ' . $video->getTitle() . ' rented! ***' . PHP_EOL;
     }
 
     private function returnVideo(): string
     {
-        $title = $this->formatInput(readline('Enter title of the video you want to return: '));
-        if ($this->store->checkIfInStore($title)) {
-            return '*** Sorry, the video you want to return has been returned already! ***' . PHP_EOL;
+        $videos = [];
+        /** @var Video $video */
+        foreach ($this->store->getInventory() as $index => $video) {
+            if (!$video->checkStatus()) {
+                $videos[$index] = $video;
+            }
         }
-
-        if (!$this->store->checkIfExists($title)) {
-            return '*** Sorry, this video does not exist! Check your spelling. ***' . PHP_EOL;
+        if (count($videos) === 0) {
+            return "*** There are no videos to return! ***" . PHP_EOL;
         }
+        echo 'Videos to return: ' . PHP_EOL;
+        foreach ($videos as $index => $video) {
+            echo "[$index] » " . $video->getTitle() . ' « ' . PHP_EOL;
+        }
+        $index = readline('Enter ID of the video you want to return: ');
 
-        $this->store->returnVideo($title);
-        return '*** Success! ' . $title . ' has been returned to the store! ***' . PHP_EOL;
+        $video = $this->store->getInventory()[$index];
+        $video->return();
+        return '*** Success! ' . $video->getTitle() . ' has been returned to the store! ***' . PHP_EOL;
 
     }
 
     private function addRating(): string
     {
-        $title = null;
-        while ($title === null) {
-            $userInput = $this->formatInput(readline('Enter title of the video you want to rate: '));
-            if (!$this->store->checkIfExists($userInput)) {
-                echo '*** Sorry, this video does not exist - check your spelling! ***' . PHP_EOL;
-                continue;
-            }
-            $title = $userInput;
+        $this->listInventory();
+        $index = (int)readline('Enter ID of the video you want to rate: ');
+
+        if (!isset($this->store->getInventory()[$index])) {
+            return "*** This video doesn't exist. Check entered ID. ***" . PHP_EOL;
         }
+
+        $video = $this->store->getInventory()[$index];
 
         $rating = null;
         while ($rating === null) {
@@ -113,29 +121,27 @@ class Application
             $rating = $userInput;
         }
 
-        $this->store->addNewRating($rating, $title);
-        return '*** Success! Rating of ' . $rating . ' added to ' . $title . ' ***' . PHP_EOL;
+        $video->rate($rating);
+        return '*** Success! Rating of ' . $rating . ' added to ' . $video->getTitle() . ' ***' . PHP_EOL;
 
     }
 
     private function listInventory()
     {
         echo '———————————————————————————————————————————' . PHP_EOL;
-        foreach ($this->store->getInventory() as $video) {
-            echo " » " . $video->getTitle() . " « " . "\n  Average rating: " . $video->getAverageRating() . "\n  Status: ";
+        /** @var Video $video */
+        foreach ($this->store->getInventory() as $index => $video) {
+            echo "[$index] » " . $video->getTitle() . ' «' . PHP_EOL;
+            echo '   Average rating: ' . number_format($video->getAverageRating(), 1);
+            echo ' | Status: ';
             if ($video->checkStatus()) {
-                echo "In Store" . PHP_EOL;
+                echo 'In Store' . PHP_EOL;
             } else {
-                echo "Not in Store" . PHP_EOL;
+                echo 'Not in Store' . PHP_EOL;
             }
         }
         echo '———————————————————————————————————————————' . PHP_EOL;
 
     }
 
-    private function formatInput($input): string{
-        return trim(strtoupper($input));
-    }
 }
-
-(new Application())->run();

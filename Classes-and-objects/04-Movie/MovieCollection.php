@@ -19,9 +19,4 @@ class MovieCollection
         }
         return $ratedMovies;
     }
-
-    public function addToCollection(Movie ...$movies)
-    {
-        array_push($this->collection, ...$movies);
-    }
 }

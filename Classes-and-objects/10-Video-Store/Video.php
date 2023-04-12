@@ -12,12 +12,12 @@ class Video
         $this->isInStore = $inStore;
     }
 
-    public function rentVideo()
+    public function rent()
     {
         $this->isInStore = false;
     }
 
-    public function returnToStore()
+    public function return()
     {
         $this->isInStore = true;
     }
@@ -27,17 +27,18 @@ class Video
         return $this->isInStore;
     }
 
-    public function addRating(int $rating)
+    public function rate(int $rating)
     {
         $this->ratings[] = $rating;
     }
 
-    public function getAverageRating(): string
+    public function getAverageRating(): float
     {
-        if (!empty($this->ratings)) {
-            return number_format(array_sum($this->ratings) / count($this->ratings), 1);
+        if(count($this->ratings) === 0){
+            return 0;
         }
-        return "Not rated";
+        return array_sum($this->ratings) / count($this->ratings);
+
     }
 
     public function getTitle(): string
