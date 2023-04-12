@@ -30,14 +30,15 @@ class VideoStore
         return false;
     }
 
-    public function newCustomer(Customer $customer){
+    public function newCustomer(Customer $customer)
+    {
         $this->customers[] = $customer;
     }
 
     public function getCustomerByUsername(string $username): ?Customer
     {
-        foreach ($this->customers as $customer){
-            if($customer->getUsername() === $username){
+        foreach ($this->customers as $customer) {
+            if ($customer->getUsername() === $username) {
                 return $customer;
             }
         }
@@ -49,7 +50,8 @@ class VideoStore
         return $this->customers;
     }
 
-    public function getVideoID(Video $video):int{
+    public function getVideoID(Video $video): int
+    {
         return array_search($video, $this->inventory);
     }
 }

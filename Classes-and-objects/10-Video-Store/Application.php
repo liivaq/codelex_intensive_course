@@ -25,10 +25,22 @@ class Application
 
         switch ($userInput) {
             case 1:
-                echo $this->createUser();
+                $username = trim(readline('Choose your username: '));
+                if ($this->checkIfUserExists($username)) {
+                    echo "*** This user already exists! ***" . PHP_EOL;
+                    $this->run();
+                    break;
+                }
+                echo "*** New user created successfully! ***" . PHP_EOL;
+                $this->createNewUser($username);
                 break;
             case 2:
                 $username = readline("Enter your username: ");
+                if (!$this->checkIfUserExists($username)) {
+                    echo "*** User not found! ***" . PHP_EOL;
+                    $this->run();
+                    break;
+                }
                 $customer = $this->store->getCustomerByUsername($username);
                 $this->customer($customer);
                 break;
@@ -36,14 +48,14 @@ class Application
                 $this->staff();
                 break;
             case 4:
-                echo "Bye!";
+                echo "Bye!" . PHP_EOL;
                 exit;
             default:
-                echo 'I do not understand you!';
+                echo 'I do not understand you!' . PHP_EOL;
         }
     }
 
-    private function customer($customer)
+    private function customer(Customer $customer)
     {
         $this->customer = $customer;
         while (true) {
@@ -122,7 +134,7 @@ class Application
 
     private function rentVideo(): string
     {
-        echo "Videos available in store: ".PHP_EOL;
+        echo "Videos available in store: " . PHP_EOL;
         $this->listAvailable();
         $index = (int)readline('Enter ID of the video you want to rent: ');
         $inventory = $this->store->getInventory();
@@ -131,7 +143,6 @@ class Application
         }
         /** @var Video $video */
         $video = $inventory[$index];
-
         $video->rent();
         $this->customer->takeHome($video);
         return '*** Success! ' . $video->getTitle() . ' rented! ***' . PHP_EOL;
@@ -145,9 +156,9 @@ class Application
         }
 
         echo 'Videos to return: ' . PHP_EOL;
-        foreach ($inventory as $video){
+        foreach ($inventory as $video) {
             $index = $this->store->getVideoID($video);
-            echo "[$index] {$video->getTitle()}". PHP_EOL;
+            echo "[$index] {$video->getTitle()}" . PHP_EOL;
         }
         $index = readline('Enter ID of the video you want to return: ');
 
@@ -190,8 +201,7 @@ class Application
         /** @var Video $video */
         foreach ($this->store->getInventory() as $index => $video) {
             echo "[$index] » " . $video->getTitle() . ' «';
-            echo ' | Average rating: ' . number_format($video->getAverageRating(), 1);
-            echo ' | Status: ';
+            echo ' | Rating: ' . number_format($video->getAverageRating(), 1) . ' | ';
             if ($video->checkStatus()) {
                 echo 'In Store' . PHP_EOL;
             } else {
@@ -206,16 +216,16 @@ class Application
         /** @var Video $video */
         foreach ($this->store->getInventory() as $index => $video) {
             if ($video->checkStatus()) {
-                echo "[$index] ". $video->getTitle() . ' | Rating: ' . $video->getAverageRating() . PHP_EOL;
+                echo "[$index] " . $video->getTitle() . ' | Rating: ' . $video->getAverageRating() . PHP_EOL;
             }
         }
     }
 
     private function customerInventory()
     {
-        echo "Your rented videos: ".PHP_EOL;
+        echo "Your rented videos: " . PHP_EOL;
         foreach ($this->customer->getInventory() as $video) {
-            echo ' -- '.$video->getTitle() . PHP_EOL;
+            echo ' -- ' . $video->getTitle() . PHP_EOL;
         }
     }
 
@@ -223,30 +233,29 @@ class Application
     {
         /** @var Customer $customer */
         foreach ($this->store->getCustomers() as $customer) {
-            echo 'Customer ID: ' . $customer->getUsername() . PHP_EOL;
+            echo 'Username: ' . $customer->getUsername() . PHP_EOL;
             echo 'Videos rented: ' . PHP_EOL;
             foreach ($customer->getInventory() as $video) {
-                echo ' -- '.$video->getTitle() . PHP_EOL;
+                echo ' -- ' . $video->getTitle() . PHP_EOL;
             }
             echo '———————————————————————————————————————————' . PHP_EOL;
         }
     }
 
-    function createUser(): string {
-        $username = null;
-        while($username === null){
-            $input = trim(readline("Create your username: "));
-            foreach($this->store->getCustomers() as $customer){
-                if ($customer->getUsername() === $input){
-                    echo "This user already exists!".PHP_EOL;
-                    continue;
-                }
-                $username = $input;
+    function checkIfUserExists(string $username): bool
+    {
+        foreach ($this->store->getCustomers() as $customer) {
+            if ($customer->getUsername() === $username) {
+                return true;
             }
         }
-
-        $customer = new Customer($username);
-        return "User $username successfully created!".$this->customer($customer).PHP_EOL;
+        return false;
     }
 
+    function createNewUser($username)
+    {
+        $customer = new Customer($username);
+        $this->store->newCustomer($customer);
+        $this->customer($customer);
+    }
 }

@@ -16,7 +16,7 @@ $store = new VideoStore(
 );
 
 $user1 = new Customer('movielover123');
-$user2 = new Customer('username');
+$user2 = new Customer('bobo');
 
 $user1->takeHome($video1);
 $user2->takeHome($video2);
