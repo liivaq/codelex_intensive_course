@@ -23,12 +23,3 @@ echo PHP_EOL.'Weather today for '.$city.PHP_EOL;
 echo '» Temperature: '.$weatherData->getTemperature().' °C'.PHP_EOL;
 echo '» Description: '.$weatherData->getDescription().PHP_EOL;
 echo '» Wind speed: '.$weatherData->getWindSpeed().' m/s'.PHP_EOL;
-
-
-
-
-
-
-
-
-
