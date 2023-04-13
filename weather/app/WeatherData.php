@@ -7,7 +7,7 @@ class WeatherData {
     private float $windSpeed;
     private string $description;
 
-   public function __construct($weatherData)
+   public function __construct(object $weatherData)
    {
        $this->temperature = $weatherData->main->temp;
        $this->windSpeed = $weatherData->wind->speed;

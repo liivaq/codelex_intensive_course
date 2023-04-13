@@ -31,7 +31,7 @@ class Connection{
         $response = $client->request(
             'GET',$this->url);
 
-        return json_decode((string)$response->getBody());
+        return json_decode($response->getBody());
     }
 
 }
