@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Models;
+namespace App;
 
 use GuzzleHttp\Client;
 
@@ -13,7 +13,7 @@ class Api
         $this->client = new Client();
     }
 
-    public function getData($userInput): ?CompanyCollection
+    public function findCompanies($userInput): ?CompanyCollection
     {
         $url = 'https://data.gov.lv/dati/lv/api/3/action/datastore_search?q='
             . $userInput .
